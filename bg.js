@@ -127,7 +127,7 @@ function getCurrentTabUrl(scan_callback) {
 
 function evalthreat(callback) {}
 function assignIcon(threatLevel) {
-	var icons = ["good", "neutral", "bad", "dead"];
+	var icons = ["good", "neutral","debatable", "bad", "dead"];
 	chrome.browserAction.setIcon({path:icons[threatLevel-1] + ".svg"});
 }
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
