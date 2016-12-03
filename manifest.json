@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+
+  "name": "pwned",
+  "description": "checks if current website has any previous breaches",
+  "version": "1.0",
+  "background": {"scripts": ["bg.js"] },
+  "options_page": "options.html",
+  "browser_action": {
+ 	 "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "https://ajax.googleapis.com/"
+  ]
+}
