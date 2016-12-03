@@ -9,6 +9,8 @@
  *   is found.
  */
  
+var lastMessage = "";
+
 function scan(url) {
   //function to get the domain name from the site
   function url_domain(data) {
@@ -46,14 +48,14 @@ function scan(url) {
       }
       infoString += "and " + leakedInfo[i].toLowerCase();
     }
-    output = "On " + monthNames[parseInt(leakDate.getMonth()+1)] + " " + leakDate.getDate() + ", "+ leakDate.getFullYear() + ", " + leakSize.toLocaleString() + " " + infoString + " were leaked from " + suffurl + ". ";
+    output = "On " + monthNames[parseInt(leakDate.getMonth()+1)] + " " + leakDate.getDate() + ", "+ leakDate.getFullYear() + ", " + leakSize.toLocaleString() + "\n" + infoString + "\nwere leaked from " + suffurl + ". \n";
     if(isVerified)
       output += "This leak has been verified.";
     else
       output += "This leak has not been verified.";
     return [getSeverity(leakSize, leakDate, isVerified, isSensitive), output];
   }
-  return [1, suffurl + " has no recorded leak we could find."];
+  return [1, suffurl + " looks safe!\nThere is no recorded leak\nor security breach we could find."];
 }
 
 function getSeverity(leakedSize, leakDate, isVerified, isSensitive) {
@@ -108,6 +110,7 @@ function getCurrentTabUrl(scan_callback) {
     var url = tab.url;
     var result = scan(url);
     assignIcon(Math.max(1, Math.min(result[0], 4)));
+    lastMessage = result[1];
     // tab.url is only available if the "activeTab" permission is declared.
     // If you want to see the URL of other tabs (e.g. after removing active:true
     // from |queryInfo|), then the "tabs" permission is required to see their
@@ -140,3 +143,8 @@ chrome.tabs.onCreated.addListener(function(tab) {
 chrome.tabs.onActivated.addListener(function(tab) {
    getCurrentTabUrl(scan);
 });
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.greeting == "hello")
+      sendResponse({farewell: lastMessage});
+  });
