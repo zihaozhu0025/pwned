@@ -137,3 +137,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 chrome.tabs.onCreated.addListener(function(tab) {
    getCurrentTabUrl(scan);
 });
+chrome.tabs.onActivated.addListener(function(tab) {
+   getCurrentTabUrl(scan);
+});
